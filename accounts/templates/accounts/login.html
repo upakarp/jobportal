@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+
+{% block head %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'accounts/css/form-elements.css' %}"
+    <link rel="stylesheet" href="{% static 'accounts/css/loginRegister.css' %}"
+
+{% endblock %}
+
+{% block loginRegisterHead %}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 show-forms">
+            <span class="show-register-form active">Register</span>
+            <span class="show-forms-divider">/</span>
+            <span class="show-login-form">Login</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block form %}
+<div class="container text-center">
+    <div class="row register-form">
+        <div class="col-sm-4 col-sm-offset-1">
+            <form role="form" method="post" class="r-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" name="login" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block form %}
+<div class="container">
+    <div class="col-md-8">
+        <h1>Home</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.title }}
+            {{ form.post }}
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <h2>Other's Post</h2>
+        {% for post in posts %}
+        <h1><a href="{% url 'home:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+            <p>Posted by {{ post.user.get_full_name }} on {{ post.created }}</p>
+        {% endfor %}
+        <h1>My Posts</h1>
+        {% for post in myPost %}
+        <h1><a href="{% url 'home:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+            <p>Posted on {{ post.created }}</p>
+            <p>Bidded by {{ post.who_bidded }}</p>
+        {% endfor %}
+    </div>
+    <div class="col-md-4">
+        <h2>Other People</h2>
+        {% for user in users %}
+        <a href="{% url 'accounts:profile_with_pk' pk=user.pk %}"><h3>{{ user.username }}</h3></a>
+        {% endfor %}
+        <h2>Friends</h2>
+
+        {% for post in myPost %}
+            {% if post.who_bidded is not None %}
+                <a href="{% url 'accounts:profile_with_pk' pk=user.pk %}"><h3>{{ post.who_bidded }}</h3></a>
+            {% else %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

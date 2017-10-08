@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block head %}
+<script type="text/javascript">
+function myFunc(){
+   {% for bids in bid %}
+   var a = document.getElementById("btn{{ bids.id }}");
+   console.log(a);
+   a.disabled = true;
+   {% endfor %}
+   //var b = document.getElementById("bidbtn");
+   //b.disabled = true;
+
+};
+</script>
+{% endblock %}
+
+{% block form %}
+    <div class="post">
+        {% if post.created %}
+            <div class="date">
+                {{ post.created }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% if post.user.get_username == user.username %}
+    <div class="container">
+        <a class="btn btn-default" href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+        {% if bid %}
+            <div class="container">
+                <h1>Bids for this post</h1>
+                {% for bids in bid %}
+                <a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">{{ bids.amount }}</a>
+                <br>
+                <!--<p>{{ bids.description }}</p>-->
+                <!--<p>{{ bids.link_user }}</p>-->
+                <!--<a class="btn btn-default" href="#" name="btn" id="btn{{ bids.id }}" onclick="myFunc(); ">Accept</a>-->
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% else %}
+    <div class="container">
+        {% if post.is_bidded %}
+        <button class="btn" disabled>Bid here</button>
+        {% else %}
+        <a class="btn btn-default" href="{% url 'home:bid_form' pk=post.pk %}" id="bidbtn">Bid here</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <strong>{{ post.post|linebreaksbr }}</strong>
+    </div>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class=" {message.tags} ">{{ message }}</li>
+            {% endfor%}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+

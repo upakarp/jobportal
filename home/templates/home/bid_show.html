@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block form %}
+
+        <p>{{ bid.amount }}</p>
+        <p>{{ bid.description }}</p>
+        <p>{{ bid.link_user }}</p>
+        {% if post.is_bidded %}
+            <button class="btn" disabled>Submit</button>
+        {% else %}
+        <form method = "post">
+            {% csrf_token %}
+            <button type = 'submit'>Submit</button>
+        </form>
+        {% endif %}
+
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles%}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+
+    <meta name="vieweport" content="width=device-width, initial-scale=1.0">
+
+    {% block head%}
+    <title>Title</title>
+    {% endblock %}
+
+</head>
+<body>
+    <br>
+    <header>
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Zyaala</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            {% if user.is_authenticated %}
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'home:home' %}">Home</a></li>
+                <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+                <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
+                <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+            </ul>
+            {% else %}
+              <!-- sepearate here -->
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'accounts:reset_password' %}">Reset Password</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form class="navbar-form" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </form>
+                </li>
+                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li><a href="{% url 'accounts:register' %}">Register</a></li>
+            </ul>
+            {% endif %}
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+    </div>
+    </header>
+
+    {% block loginRegisterHead %}
+
+    {% endblock %}
+
+    <content>
+    <div class="container">
+        <div class="col-md-4">
+            {% block form %}
+            <h1>Base</h1>
+            {% endblock %}
+        </div>
+
+    </div>
+    </content>
+
+
+</body>
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</html>
