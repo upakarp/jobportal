@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-
 
 class Post(models.Model):
     title = models.TextField(null=True)
@@ -37,3 +37,9 @@ class Bid(models.Model):
     link_user = models.ForeignKey(User, on_delete=models.CASCADE)
     link_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default = False)
+
+class Rate(models.Model):
+    review_number = models.IntegerField(null=True, validators=[MinValueValidator(0), MaxValueValidator(5)], default=3)
+    reviewed_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    reviewed_by = models.OneToOneField(User, on_delete=models.CASCADE, related_name='reviewing_user', null=True)
+    review = models.TextField(null=True)

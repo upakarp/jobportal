@@ -4,8 +4,9 @@
 <title>Profile</title>
 {% endblock %}
 
-{% block body %}
+{% block form %}
 <div class="container">
+    <div class = "col-md-6">
     <p>
         Username : {{ user }}<br>
         First Name: {{ user.first_name }}<br>
@@ -19,4 +20,14 @@
         <img src = "{{ user.userprofile.images.url }}" width="240" alt="">
         {% endif %}
     </p>
+
+    {% if user.pk != request.user.pk %}
+        <a href="{% url 'home:rate' pk=user.pk %}">Rate here</a>
+    {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <a href="{% url 'home:rate_show' pk=user.pk%}">Show this user's ratings</a>
+    </div>
+</div>
 {% endblock %}

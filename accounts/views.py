@@ -6,7 +6,15 @@ from accounts.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib.postgres.search import SearchVector
+from home.models import Post
 # Create your views here.
+
+def home(request):
+    return render(request, 'base.html')
+
+def search():
+    pass
 
 def register(request):
     if request.method == 'POST':

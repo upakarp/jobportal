@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <title>Zyaala - Dashboard</title>
+	<link href="{% static 'home/css/datepicker3.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block form %}
 <div class="container">
     <div class="col-md-8">
@@ -32,12 +37,31 @@
 
         {% for post in myPost %}
             {% if post.who_bidded is not None %}
-                <a href="{% url 'accounts:profile_with_pk' pk=user.pk %}"><h3>{{ post.who_bidded }}</h3></a>
+                <a href="{% url 'accounts:profile_with_pk' pk=post.who_bidded.pk %}"><h3>{{ post.who_bidded }}</h3></a>
             {% else %}
-
             {% endif %}
         {% endfor %}
     </div>
 </div>
+
+
+
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/custom.js"></script>
+	<script>
+		window.onload = function () {
+	var chart1 = document.getElementById("line-chart").getContext("2d");
+	window.myLine = new Chart(chart1).Line(lineChartData, {
+	responsive: true,
+	scaleLineColor: "rgba(0,0,0,.2)",
+	scaleGridLineColor: "rgba(0,0,0,.05)",
+	scaleFontColor: "#c5c7cc"
+	});
+};
+	</script>
 
 {% endblock %}

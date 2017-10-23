@@ -4,8 +4,8 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
-from home.forms import HomeForm, BidForm
-from home.models import Post, Friend, Bid
+from home.forms import HomeForm, BidForm, ReviewForm
+from home.models import Post, Friend, Bid, Rate
 from django.utils import timezone
 
 class HomeView(TemplateView):
@@ -101,7 +101,7 @@ class BidView(TemplateView):
             form = BidForm()
             return redirect('home:home')
 
-        args = {'form':form,}
+        args = {'form' : form,}
         return render(request, self.template_name, args)
 
 def bid_show(request, pk, pk_alt):
@@ -125,7 +125,42 @@ def bid_show(request, pk, pk_alt):
 #
 #     return render(request, 'home/home.html', userid)
 
+def rate(request, pk):
+    rate = Rate.objects.filter(pk=pk)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
 
+            rate.save()
+            return redirect('home:home')
+    else:
+        form = ReviewForm()
+    return render(request, 'home/rate.html', {'form':form })
 
+class RateView(TemplateView):
 
+    template_name = 'home/rate.html'
 
+    def get(self, request, **kwargs):
+        form = ReviewForm()
+        args = {'form':form}
+        return render(request, self.template_name, args)
+
+    def post(self, request, pk, **kwargs):
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.reviewed_user = User.objects.get(pk=pk)
+            rate.reviewed_by = request.user
+            rate.save()
+            form = ReviewForm()
+            return redirect('home:home')
+
+        args = {'form' : form,}
+        return render(request, self.template_name, args)
+
+def rate_show(request, pk):
+    rate = get_object_or_404(Rate)
+    args = {'rate':rate}
+    return render(request, 'home/rate_show.html', args)

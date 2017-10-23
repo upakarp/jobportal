@@ -4,7 +4,7 @@
 
         <p>{{ bid.amount }}</p>
         <p>{{ bid.description }}</p>
-        <p>{{ bid.link_user }}</p>
+        <a href="{% url 'accounts:profile_with_pk' pk=bid.link_user.pk %}">{{ bid.link_user }}</a>
         {% if post.is_bidded %}
             <button class="btn" disabled>Submit</button>
         {% else %}

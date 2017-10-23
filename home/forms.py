@@ -1,5 +1,7 @@
 from django import forms
-from home.models import Post, Bid
+from home.models import Post, Bid, Rate
+
+from django.contrib.auth.models  import User
 
 
 class HomeForm(forms.ModelForm):
@@ -20,4 +22,12 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = ('amount', 'description',)
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = Rate
+        fields = ('review_number', 'review',)
+
+
 

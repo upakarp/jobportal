@@ -1,12 +1,69 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    {% load staticfiles %}
+    <title>Zyaala Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>"
+    <link rel="stylesheet" href="{% static 'accounts/css/loginStyle.css' %}">
+{% endblock %}
+
+
 {% block form %}
-<div class="container-fluid text-center">
-    <h1>Register</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+<div class="pen-title">
+    <h1>Zyaala Login</h1><span>Work</i> Hire Earn</a></span>
 </div>
+<div class="rerun"><a href="">Back to Home</a></div>
+
+<div class="container">
+    <div class="card"></div>
+        <div class="card">
+        <h1 class="title">Register
+            <div class="close"></div>
+        </h1>
+            <form role="form" method="post">
+                {% csrf_token %}
+                <div class="input-container">
+                    {{ form.username }}
+                    <label for="#{label}">Username</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    {{ form.first_name }}
+                    <label for="#{label}">First name</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    {{ form.last_name }}
+                    <label for="#{label}">Last name</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    {{ form.email }}
+                    <label for="#{label}">Email Address</label>
+                    <div class="bar"></div>
+                </div>
+
+                <div class="input-container">
+                    {{ form.password1 }}
+                    <label for="#{label}">Password</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    {{ form.password2 }}
+                    <label for="#{label}">Repeat Password</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" name="register"><span>Register</span></button>
+                </div>
+            </form>
+
+</div>
+</div>
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="{% static 'accounts/js/loginStyle.js' %}"></script>
+
 {% endblock %}
