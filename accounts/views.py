@@ -1,13 +1,15 @@
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from accounts.forms import RegistrationForm, EditProfileForm
+from django.shortcuts import render, redirect, get_object_or_404
+from accounts.forms import RegistrationForm, EditProfileForm, UpdateProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.postgres.search import SearchVector
 from home.models import Post
+from accounts.models import UpdateProfile
+
 # Create your views here.
 
 def home(request):
@@ -43,11 +45,29 @@ def edit_profile(request):
 
         if form.is_valid():
             form.save()
-            return redirect(reverse('profile'))
+            return redirect(reverse('accounts:profile'))
     else:
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, 'accounts/edit_profile.html', args)
+
+@login_required()
+def update_profile(request):
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST)
+
+        if form.is_valid():
+            form.user = request.user
+            form.description = request.POST['description']
+            form.city = request.POST['city']
+            form.website = request.POST['website']
+            form.phone = request.POST['phone']
+            UpdateProfile.objects.create(user=form.user, description=form.description, city=form.city, website=form.website, phone=form.phone)
+            return redirect(reverse('home:home'))
+    else:
+        form = UpdateProfileForm(instance=request.user)
+        args = {'form':form}
+        return render(request, 'accounts/update_profile.html', args)
 
 def change_password(request):
     if request.method == 'POST':

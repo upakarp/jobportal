@@ -1,11 +1,265 @@
 {% extends 'base.html' %}
 
 {% block head %}
+    {% load staticfiles %}
     <title>Zyaala - Dashboard</title>
 	<link href="{% static 'home/css/datepicker3.css' %}" rel="stylesheet">
+    <script src="https://khalti.com/static/khalti-checkout.js"></script>
 {% endblock %}
 
 {% block form %}
+
+<!-- Dashboard code -->
+<div id ="container">
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img src="IMG.jpg" class="img-responsive" alt="">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">L10nel Messi</div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form>
+		<ul class="nav menu">
+			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+			<li><a href="latest.html"><em class="fa fa-calendar">&nbsp;</em> Latest</a></li>
+			<li><a href="contact.html"><em class="fa fa-toggle-off">&nbsp;</em> Contact</a></li>
+            <li><button id="payment-button">Pay with Khalti</button></li>
+			<li><a href="{% url 'accounts:logout' %}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+		</ul>
+	</div><!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+		<div class="col-md-6">
+				<div class="panel panel-default ">
+					<div class="panel-heading">
+						Timeline
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body timeline-container">
+						<ul class="timeline">
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-pushpin"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">Lorem ipsum dolor sit amet</h4>
+									</div>
+									<div class="timeline-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at sodales nisl. Donec malesuada orci ornare risus finibus feugiat.</p>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="timeline-badge primary"><em class="glyphicon glyphicon-link"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">Lorem ipsum dolor sit amet</h4>
+									</div>
+									<div class="timeline-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-camera"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">Lorem ipsum dolor sit amet</h4>
+									</div>
+									<div class="timeline-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at sodales nisl. Donec malesuada orci ornare risus finibus feugiat.</p>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-paperclip"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">Lorem ipsum dolor sit amet</h4>
+									</div>
+									<div class="timeline-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--/.col-->
+			<div class="col-md-6">
+				<div class="panel panel-default chat">
+					<div class="panel-heading">
+						Chat
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body">
+						<ul>
+							<li class="left clearfix"><span class="chat-img pull-left">
+								<img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								</span>
+								<div class="chat-body clearfix">
+									<div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
+								</div>
+							</li>
+							<li class="right clearfix"><span class="chat-img pull-right">
+								<img src="http://placehold.it/60/dde0e6/5f6468" alt="User Avatar" class="img-circle" />
+								</span>
+								<div class="chat-body clearfix">
+									<div class="header"><strong class="pull-left primary-font">Jane Doe</strong> <small class="text-muted">6 mins ago</small></div>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
+								</div>
+							</li>
+							<li class="left clearfix"><span class="chat-img pull-left">
+								<img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								</span>
+								<div class="chat-body clearfix">
+									<div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<div class="input-group">
+							<input id="btn-input" type="text" class="form-control input-md" placeholder="Type your message here..." /><span class="input-group-btn">
+								<button class="btn btn-primary btn-md" id="btn-chat">Send</button>
+						</span></div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						To-do List
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body">
+						<ul class="todo-list">
+							<li class="todo-list-item">
+								<div class="checkbox">
+									<input type="checkbox" id="checkbox-1" />
+									<label for="checkbox-1">Make Payment</label>
+								</div>
+								<div class="pull-right action-buttons"><a href="#" class="trash">
+									<em class="fa fa-trash"></em>
+								</a></div>
+							</li>
+							<li class="todo-list-item">
+								<div class="checkbox">
+									<input type="checkbox" id="checkbox-2" />
+									<label for="checkbox-2">Check Messages</label>
+								</div>
+								<div class="pull-right action-buttons"><a href="#" class="trash">
+									<em class="fa fa-trash"></em>
+								</a></div>
+							</li>
+							<li class="todo-list-item">
+								<div class="checkbox">
+									<input type="checkbox" id="checkbox-3" />
+									<label for="checkbox-3">Reply to Worker</label>
+								</div>
+								<div class="pull-right action-buttons"><a href="#" class="trash">
+									<em class="fa fa-trash"></em>
+								</a></div>
+							</li>
+
+
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<div class="input-group">
+							<input id="btn-input" type="text" class="form-control input-md" placeholder="Add new task" /><span class="input-group-btn">
+								<button class="btn btn-primary btn-md" id="btn-todo">Add</button>
+						</span></div>
+					</div>
+				</div>
+			</div><!--/.col-->
+
+
+
+
+			<div class="col-sm-12">
+				<p class="back-link">Zyaala by <a href="https://zyaala.com/duke/about.html" target="_blank">WiredIn Team</a></p>
+			</div>
+		</div><!--/.row-->
+	</div>	<!--/.main-->
+</div>
+<!-- Dashboard code ends -->
+
 <div class="container">
     <div class="col-md-8">
         <h1>Home</h1>
@@ -46,12 +300,12 @@
 
 
 
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
-	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/custom.js"></script>
+	<script src="{% static 'home/js/chart.min.js' %}"></script>
+	<script src="{% static 'home/js/chart-data.js' %}"></script>
+	<script src="{% static 'home/js/easypiechart.js' %}"></script>
+	<script src="{% static 'home/js/easypiechart-data.js' %}"></script>
+	<script src="{% static 'home/js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'home/js/custom.js' %}"></script>
 	<script>
 		window.onload = function () {
 	var chart1 = document.getElementById("line-chart").getContext("2d");
@@ -62,6 +316,29 @@
 	scaleFontColor: "#c5c7cc"
 	});
 };
+
+    var config = {
+            // replace the publicKey with yours
+            "publicKey": "test_public_key_af6544c9829b4a2fb888a47b4751d1bb",
+            "productIdentity": "1234567890",
+            "productName": "Dragon",
+            "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+            "eventHandler": {
+                onSuccess (payload) {
+                    // hit merchant api for initiating verfication
+                    console.log(payload);
+                },
+                onError (error) {
+                    console.log(error);
+                }
+            }
+        };
+
+        var checkout = new KhaltiCheckout(config);
+        var btn = document.getElementById("payment-button");
+        btn.onclick = function () {
+            checkout.show({amount: 1000});
+        }
 	</script>
 
 {% endblock %}
