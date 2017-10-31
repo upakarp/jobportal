@@ -12,7 +12,7 @@ class UpdateProfile(models.Model):
     city = models.CharField(max_length=100, default='')
     website = models.URLField(default='')
     phone = models.IntegerField(default=0)
-    images = models.ImageField(upload_to='profile_image', blank=True, null=True)
+    images = models.ImageField(upload_to='profile_img', blank=True, null=True)
 
 #     def __str__(self):
 #         return self.user.username

@@ -20,10 +20,14 @@ from django.contrib import admin
 from jobportal import views
 
 urlpatterns = [
-    url(r'^$', views.login_redirect,name='login_redirect'),
+    url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'account/', include('accounts.urls', namespace='accounts')),
     url(r'home/', include('home.urls', namespace='home')),
     url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

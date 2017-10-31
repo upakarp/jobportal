@@ -5,6 +5,134 @@
 {% endblock %}
 
 {% block form %}
+
+<div id="container">
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+		<div class="col-md-6">
+				<div class="panel panel-default ">
+					<div class="panel-heading">
+						Timeline
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body timeline-container">
+						<ul class="timeline">
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-pushpin"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title"></h4>
+									</div>
+									<div class="timeline-body">
+										<p>
+											Username : {{ user }}<br>
+											First Name: {{ user.first_name }}<br>
+											Last Name : {{ user.last_name }}<br>
+											Email : {{ user.email }}<br>
+											Description : {{ userprofile.description }}<br>
+											City : {{ userprofile.city }}<br>
+											Website : {{ userprofile.website }}<br>
+											Phone : {{ userprofile.phone }}<br>
+											{% if userprofile.images %}
+											<img src = "{{ userprofile.images.url }}" width="240" alt="image">
+											{% endif %}
+										</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--/.col-->
+
+			{% if user.pk != request.user.pk and user.pk != post.who_bidded %}
+			<div class="col-md-6">
+				<div class="panel panel-default ">
+					<div class="panel-heading">
+						Timeline
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body timeline-container">
+						<ul class="timeline">
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-pushpin"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title"></h4>
+									</div>
+									<div class="timeline-body">
+
+										<a href="{% url 'home:rate' pk=user.pk %}">Rate here</a>
+
+										<form method="post">
+											{% csrf_token %}
+											{{ form.as_p }}
+											<button type="submit">Submit</button>
+										</form>
+
+										{% if total_review == 0 %}
+
+										{% else %}
+											Average rating is : {{ total_review }}
+										{% endif %}
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--/.col-->
+			{% endif %}
+
+
+		</div>
+</div>
+</div>
+
 <div class="container">
     <div class = "col-md-6">
     <p>
@@ -12,22 +140,39 @@
         First Name: {{ user.first_name }}<br>
         Last Name : {{ user.last_name }}<br>
         Email : {{ user.email }}<br>
-        Description : {{ user.userprofile.description }}<br>
-        City : {{ user.userprofile.city }}<br>
-        Website : {{ user.userprofile.website }}<br>
-        Phone : {{ user.userprofile.phone }}<br>
-        {% if user.userprofile.images %}
-        <img src = "{{ user.userprofile.images.url }}" width="240" alt="">
+        Description : {{ userprofile.description }}<br>
+        City : {{ userprofile.city }}<br>
+        Website : {{ userprofile.website }}<br>
+        Phone : {{ userprofile.phone }}<br>
+        {% if userprofile.images %}
+        <img src = "{{ userprofile.images.url }}" width="240" alt="image">
         {% endif %}
     </p>
 
-    {% if user.pk != request.user.pk %}
-        <a href="{% url 'home:rate' pk=user.pk %}">Rate here</a>
-    {% endif %}
     </div>
 
     <div class="col-md-6">
-        <a href="{% url 'home:rate_show' pk=user.pk%}">Show this user's ratings</a>
+    {% if user.pk != request.user.pk and user.pk != post.who_bidded %}
+        <a href="{% url 'home:rate' pk=user.pk %}">Rate here</a>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if total_review == 0 %}
+
+        {% else %}
+            Average rating is : {{ total_review }}
+        {% endif %}
+    {% endif %}
+
+    <!--<div class="container">-->
+        <!--<a href="{% url 'home:rate_show' pk=user.pk %}">Show this user's ratings</a>-->
+    <!--</div>-->
     </div>
+
+    {{ rate.review }}
 </div>
 {% endblock %}

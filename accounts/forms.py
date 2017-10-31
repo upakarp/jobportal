@@ -53,4 +53,8 @@ class UpdateProfileForm(forms.ModelForm):
             'city',
             'website',
             'phone',
+            'images'
         )
+
+class SearchForm(forms.ModelForm):
+    search_text = forms.CharField(max_length=200)

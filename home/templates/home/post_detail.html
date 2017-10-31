@@ -18,6 +18,113 @@ function myFunc(){
 {% endblock %}
 
 {% block form %}
+
+    <div id="container">
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+		<div class="col-md-12">
+				<div class="panel panel-default ">
+					<div class="panel-heading">
+						Post Job
+						<ul class="pull-right panel-settings panel-button-tab-right">
+							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+								<em class="fa fa-cogs"></em>
+							</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<ul class="dropdown-settings">
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 1
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 2
+											</a></li>
+											<li class="divider"></li>
+											<li><a href="#">
+												<em class="fa fa-cog"></em> Settings 3
+											</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body timeline-container">
+						<ul class="timeline">
+							<li>
+								<div class="timeline-badge"><em class="glyphicon glyphicon-pushpin"></em></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">
+
+
+
+                                                <div class="container">
+                                                    <h1>{{ post.title }}</h1>
+                                                    <strong>{{ post.post|linebreaksbr }}</strong>
+                                                </div>
+                                                <br>
+
+                                                <div class="post">
+                                                {% if post.created %}
+                                                    <div class="date">
+                                                        {{ post.created }}
+                                                    </div>
+                                                {% endif %}
+                                                </div>
+
+                                                <br>
+                                                <br>
+
+                                                {% if post.user.get_username == user.username %}
+                                                <div class="container">
+                                                    <a class="btn btn-default" href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                </div>
+                                                    {% if bid %}
+                                                        <div class="container">
+                                                            <h1>Bids for this post</h1>
+                                                            {% for bids in bid %}
+                                                            <a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">{{ bids.amount }}</a>
+                                                            <br>
+                                                            <!--<p>{{ bids.description }}</p>-->
+                                                            <!--<p>{{ bids.link_user }}</p>-->
+                                                            <!--<a class="btn btn-default" href="#" name="btn" id="btn{{ bids.id }}" onclick="myFunc(); ">Accept</a>-->
+
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% else %}
+                                                <div class="container">
+                                                    {% if post.is_bidded %}
+                                                    <button class="btn" disabled>Bid here</button>
+                                                    {% else %}
+                                                    <a class="btn btn-default" href="{% url 'home:bid_form' pk=post.pk %}" id="bidbtn">Bid here</a>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+
+                                                {% if messages %}
+                                                    <ul class="messages">
+                                                        {% for message in messages %}
+                                                            <li class=" {message.tags} ">{{ message }}</li>
+                                                        {% endfor%}
+                                                    </ul>
+                                                {% endif %}
+                                        </h4>
+									</div>
+
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+        </div>
+</div>
+</div>
+
+
     <div class="post">
         {% if post.created %}
             <div class="date">

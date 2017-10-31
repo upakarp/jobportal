@@ -13,5 +13,7 @@ urlpatterns =[
     url(r'^rate/(?P<pk>\d+)/$', RateView.as_view() , name='rate'),
     url(r'^rate_show/(?P<pk>\d+)/$', views.rate_show, name='rate_show'),
     # url(r'^ratings/(?P<pk>\d+)$', include('star_ratings.urls', namespace='ratings')),
+    url(r'^my_job/$', views.my_job, name='my_job'),
+    url(r'^post_job/$', views.post_job, name="post_job"),
 
 ]

@@ -4,6 +4,8 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
+
+from accounts.models import UpdateProfile
 from home.forms import HomeForm, BidForm, ReviewForm
 from home.models import Post, Friend, Bid, Rate
 from django.utils import timezone
@@ -16,11 +18,12 @@ class HomeView(TemplateView):
         posts = Post.objects.exclude(user=request.user).order_by('-created')
         myPost = Post.objects.filter(user=request.user).order_by('-created')
         users = User.objects.exclude(id=request.user.id)
+        userprofile = UpdateProfile.objects.get(user=request.user)
 
         # friend = get_object_or_404(Friend, current_user=request.user)
         # friends = friend.user.all()
 
-        args= {'form':form, 'posts':posts, 'users':users,  'myPost':myPost}
+        args= {'form':form, 'posts':posts, 'users':users,  'myPost':myPost, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
 
@@ -125,22 +128,22 @@ def bid_show(request, pk, pk_alt):
 #
 #     return render(request, 'home/home.html', userid)
 
-def rate(request, pk):
-    rate = Rate.objects.filter(pk=pk)
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            rate = form.save(commit=False)
-
-            rate.save()
-            return redirect('home:home')
-    else:
-        form = ReviewForm()
-    return render(request, 'home/rate.html', {'form':form })
+# def rate(request, pk):
+#     rate = Rate.objects.filter(pk=pk)
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             rate = form.save(commit=False)
+#
+#             rate.save()
+#             return redirect('home:home')
+#     else:
+#         form = ReviewForm()
+#     return render(request, 'home/rate.html', {'form':form })
 
 class RateView(TemplateView):
 
-    template_name = 'home/rate.html'
+    template_name = 'accounts/profile.html'
 
     def get(self, request, **kwargs):
         form = ReviewForm()
@@ -157,10 +160,32 @@ class RateView(TemplateView):
             form = ReviewForm()
             return redirect('home:home')
 
-        args = {'form' : form,}
+        args = {'form' : form}
         return render(request, self.template_name, args)
 
 def rate_show(request, pk):
     rate = get_object_or_404(Rate)
     args = {'rate':rate}
     return render(request, 'home/rate_show.html', args)
+
+def my_job(request):
+    myJob = Post.objects.filter(user=request.user).order_by('-created')
+    args = {'myJob': myJob}
+    return render(request, 'home/myJob.html', args)
+
+def post_job(request):
+    if request.method == 'POST':
+        form = HomeForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            # title = form.cleaned_data['title']
+            # text = form.cleaned_data['post']
+            form = HomeForm()
+            return redirect('home:home')
+    else:
+        form = HomeForm()
+
+    args = {'form': form, }
+    return render(request, 'home/post_job.html', args)

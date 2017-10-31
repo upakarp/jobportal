@@ -1,4 +1,6 @@
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect, render
 
-def login_redirect(request):
-    return redirect('accounts:login')
+
+def index(request):
+    return render(request, 'base.html')

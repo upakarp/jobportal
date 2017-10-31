@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}">
 
+
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
     <meta name="vieweport" content="width=device-width, initial-scale=1.0">
 
@@ -43,11 +45,12 @@
                 <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
 
                 <li>
-                    <form class="navbar-form" role="search">
+                    <form method="post" class="navbar-form" role="search">
+                        {% csrf_token %}
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">
                         </div>
-                        <button type="button" class="btn btn-default">
+                        <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </form>
@@ -93,7 +96,14 @@
 					</a>
 						<ul class="dropdown-menu dropdown-alerts">
 							<li><a href="#">
-								<div><em class="fa fa-envelope"></em> 1 New Message
+								<div><em class="fa fa-envelope"></em>
+									{% if messages %}
+										<ul class="messages">
+											{% for message in messages %}
+												<li class=" {message.tags} ">{{ message }}</li>
+											{% endfor%}
+										</ul>
+									{% endif %}
 									<span class="pull-right text-muted small">3 mins ago</span></div>
 							</a></li>
 							<li class="divider"></li>
@@ -111,6 +121,46 @@
 					</li>
                 <!--<li><a href="{% url 'accounts:logout' %}">Logout</a></li>-->
             </ul>
+          </div>
+
+                <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				{% if userprofile.images %}
+				<img src="{{ userprofile.images.url }}" class="img-responsive" alt="">
+				{% endif %}
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">{{ userprofile.user }}</div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form>
+		<ul class="nav menu">
+			<li class="active"><a href="{% url 'home:home' %}" class="dashboard"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+			<li><a href="{% url 'home:my_job' %}" class="myjob"><em class="fa fa-calendar">&nbsp;</em> My Job </a></li>
+			<li><a href="{% url 'home:post_job' %}" class="postjob"><em class="fa fa-toggle-off">&nbsp;</em>Post job</a></li>
+            <li><button id="payment-button">Pay with Khalti</button></li>
+
+			<li>
+				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="hosted_button_id" value="6RNT8A4HBBJRE">
+					<input type="image" src="http://images.paypal.com/images/x-click-but25.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+					<img alt="" src="http://images.paypal.com/images/x-click-but25.gif" width="1" height="1">
+				</form>
+			</li>
+
+			<li><a href="{% url 'accounts:logout' %}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+		</ul>
+	</div>
+
             {% else %}
               <!-- sepearate here -->
             <ul class="nav navbar-nav">
@@ -119,11 +169,12 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form class="navbar-form" role="search">
+                    <form method="post" class="navbar-form" role="search">
+                        {% csrf_token %}
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">
                         </div>
-                        <button type="button" class="btn btn-default">
+                        <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </form>
@@ -131,8 +182,9 @@
                 <li><a href="{% url 'accounts:login' %}">Login</a></li>
                 <li><a href="{% url 'accounts:register' %}">Register</a></li>
             </ul>
+            </div>
             {% endif %}
-          </div><!--/.nav-collapse -->
+          <!--/.nav-collapse -->
         </div><!--/.container-fluid -->
         </div>
       </nav>

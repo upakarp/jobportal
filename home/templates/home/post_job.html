@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head %}
-<title>Profile</title>
-{% endblock %}
-
 {% block form %}
 
 <div id="container">
@@ -47,7 +43,7 @@
                                             <form method="post">
                                                 {% csrf_token %}
                                                 {{ form.as_p }}
-                                                <button type="submit">Submit</button>
+                                                <button type="submit">Post</button>
                                             </form>
                                         </h4>
 									</div>
@@ -61,7 +57,5 @@
         </div>
 </div>
 </div>
-
-
 
 {% endblock %}

@@ -178,3 +178,48 @@ Full stack:
 1500547594414	Marionette	INFO	Listening on port 37472
 1500547594482	Marionette	WARN	TLS certificate errors will be ignored for this session
 1500547596097	Marionette	INFO	New connections will no longer be accepted
+1509087376216	geckodriver	INFO	geckodriver 0.18.0
+1509087376227	geckodriver	INFO	Listening on 127.0.0.1:34761
+1509087377408	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1509087378478	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1509087379457	Marionette	INFO	Enabled via --marionette
+1509087383890	Marionette	INFO	Listening on port 33351
+1509087383982	Marionette	WARN	TLS certificate errors will be ignored for this session
+1509087384032	Marionette	DEBUG	Register listener.js for window 2147483649
+1509087384061	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1509087384967	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1509087384967	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1509087404021	addons.productaddons	WARN	Failed downloading XML, status: 0, reason: timeout
+1509087440268	Marionette	DEBUG	Received observer notification "outer-window-destroyed" for "2147483649"
+1509087440289	Marionette	INFO	New connections will no longer be accepted
+1509087440314	addons.productaddons	WARN	Failed downloading via XHR, status: 0, reason: error
+1509087454314	geckodriver	INFO	geckodriver 0.18.0
+1509087454318	geckodriver	INFO	Listening on 127.0.0.1:40668
+1509087455454	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1509087455672	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1509087456393	Marionette	INFO	Enabled via --marionette
+1509087459217	Marionette	INFO	Listening on port 43209
+1509087459276	Marionette	WARN	TLS certificate errors will be ignored for this session
+1509087459325	Marionette	DEBUG	Register listener.js for window 2147483649
+1509087459364	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1509087460158	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1509087460158	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1509087479335	addons.productaddons	WARN	Failed downloading XML, status: 0, reason: timeout
+JavaScript error: http://127.0.0.1:8000/static/accounts/js/loginStyle.js, line 1: ReferenceError: $ is not defined
+1509087538465	addons.productaddons	WARN	Failed downloading via XHR, status: 0, reason: error
+1509087576603	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "http://127.0.0.1:8000/account/login/"
+1509087576606	Marionette	DEBUG	Received DOM event "pageshow" for "http://127.0.0.1:8000/account/login/"
+1509087576889	Marionette	DEBUG	Received DOM event "beforeunload" for "http://127.0.0.1:8000/account/login/"
+1509087577731	Marionette	DEBUG	Received DOM event "pagehide" for "http://127.0.0.1:8000/account/login/"
+1509087577731	Marionette	DEBUG	Received DOM event "unload" for "http://127.0.0.1:8000/account/login/"
+JavaScript error: http://127.0.0.1:8000/static/home/js/easypiechart.js, line 347: TypeError: $ is undefined
+JavaScript error: http://127.0.0.1:8000/static/home/js/easypiechart-data.js, line 1: ReferenceError: $ is not defined
+JavaScript error: http://127.0.0.1:8000/static/home/js/bootstrap-datepicker.js, line 25: TypeError: $ is not a function
+JavaScript error: http://127.0.0.1:8000/static/home/js/custom.js, line 1: ReferenceError: $ is not defined
+JavaScript error: http://127.0.0.1:8000/home/, line 526: ReferenceError: KhaltiCheckout is not defined
+1509087707915	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "http://127.0.0.1:8000/home/"
+JavaScript error: http://127.0.0.1:8000/home/, line 500: TypeError: document.getElementById(...) is null
+1509087707921	Marionette	DEBUG	Received DOM event "pageshow" for "http://127.0.0.1:8000/home/"
+1509087707944	Marionette	INFO	New connections will no longer be accepted
+[Child 4585] WARNING: pipe error (19): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 4585] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
