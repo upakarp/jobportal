@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'account/', include('accounts.urls', namespace='accounts')),
     url(r'home/', include('home.urls', namespace='home')),
     url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
-
+    url(r'^chat/', include('chat.urls', namespace='chat')),
 ]
 
 if settings.DEBUG:

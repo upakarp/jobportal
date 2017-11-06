@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
     <meta name="vieweport" content="width=device-width, initial-scale=1.0">
 
-    {% block head%}
+    {% block head %}
     <title>Title</title>
     {% endblock %}
 
@@ -92,7 +92,7 @@
 
 					</li>
 					<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-						<em class="fa fa-bell"></em><span class="label label-info">5</span>
+						<em class="fa fa-bell"></em>
 					</a>
 						<ul class="dropdown-menu dropdown-alerts">
 							<li><a href="#">
@@ -104,19 +104,9 @@
 											{% endfor%}
 										</ul>
 									{% endif %}
-									<span class="pull-right text-muted small">3 mins ago</span></div>
+								</div>
 							</a></li>
 							<li class="divider"></li>
-							<li><a href="#">
-								<div><em class="fa fa-heart"></em> 12 New Likes
-									<span class="pull-right text-muted small">4 mins ago</span></div>
-							</a></li>
-							<li class="divider"></li>
-							<li><a href="#">
-								<div><em class="fa fa-user"></em> 5 New Followers
-									<span class="pull-right text-muted small">4 mins ago</span></div>
-							</a></li>
-
 						</ul>
 					</li>
                 <!--<li><a href="{% url 'accounts:logout' %}">Logout</a></li>-->
@@ -146,17 +136,11 @@
 			<li class="active"><a href="{% url 'home:home' %}" class="dashboard"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
 			<li><a href="{% url 'home:my_job' %}" class="myjob"><em class="fa fa-calendar">&nbsp;</em> My Job </a></li>
 			<li><a href="{% url 'home:post_job' %}" class="postjob"><em class="fa fa-toggle-off">&nbsp;</em>Post job</a></li>
-            <li><button id="payment-button">Pay with Khalti</button></li>
+            <!--<li><button id="payment-button">Pay with Khalti</button></li>-->
 
-			<li>
-				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-					<input type="hidden" name="cmd" value="_s-xclick">
-					<input type="hidden" name="hosted_button_id" value="6RNT8A4HBBJRE">
-					<input type="image" src="http://images.paypal.com/images/x-click-but25.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					<img alt="" src="http://images.paypal.com/images/x-click-but25.gif" width="1" height="1">
-				</form>
-			</li>
+			<li><div id="paypal-button-container"></div></li>
 
+			<li><a href="{% url 'home:map' %}">Map</a></li>
 			<li><a href="{% url 'accounts:logout' %}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
 	</div>
@@ -186,7 +170,6 @@
             {% endif %}
           <!--/.nav-collapse -->
         </div><!--/.container-fluid -->
-        </div>
       </nav>
     </div>
 
@@ -206,5 +189,104 @@
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
 
+    // Render the PayPal button
+
+
+
+    paypal.Button.render({
+
+
+
+        // Set your environment
+
+
+
+        env: 'sandbox', // sandbox | production
+
+
+
+        // Specify the style of the button
+
+
+
+        style: {
+
+            label: 'pay',
+
+            size:  'medium', // small | medium | large | responsive
+
+            shape: 'pill',   // pill | rect
+
+            color: 'blue'   // gold | blue | silver | black
+
+        },
+
+
+
+        // PayPal Client IDs - replace with your own
+
+        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+
+
+
+        client: {
+
+            sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+
+            production: '<insert production client id>'
+
+        },
+
+
+
+        // Wait for the PayPal button to be clicked
+
+
+
+        payment: function(data, actions) {
+
+            return actions.payment.create({
+
+                payment: {
+
+                    transactions: [
+
+                        {
+
+                            amount: { total: '15', currency: 'USD' }
+
+                        }
+
+                    ]
+
+                }
+
+            });
+
+        },
+
+
+
+        // Wait for the payment to be authorized by the customer
+
+
+
+        onAuthorize: function(data, actions) {
+
+            return actions.payment.execute().then(function() {
+
+                window.alert('Payment Complete!');
+
+            });
+
+        }
+
+
+
+    }, '#paypal-button-container');
+
+</script>
 </html>

@@ -52,12 +52,14 @@ def change_friends(request, operation, pk):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     bid = Bid.objects.filter(link_post = pk)
+    userprofile = UpdateProfile.objects.get(user=request.user)
 
-    args = {'post':post, 'bid':bid}
+    args = {'post':post, 'bid':bid, 'userprofile':userprofile}
     return render(request, 'home/post_detail.html', args)
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    userprofile = UpdateProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = HomeForm(request.POST, instance=post)
         if form.is_valid():
@@ -71,7 +73,7 @@ def post_edit(request, pk):
             messages.warning(request, 'Please fill up the form')
     else:
         form = HomeForm(instance = post)
-    return render(request, 'home/post_edit.html', {'form':form})
+    return render(request, 'home/post_edit.html', {'form':form, 'userprofile':userprofile})
 
 # def bid_form(request, pk):
 #     #bid = get_object_or_404(Bid, pk=pk)
@@ -91,7 +93,8 @@ class BidView(TemplateView):
 
     def get(self, request, **kwargs):
         form = BidForm()
-        args = {'form':form}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args = {'form':form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
     def post(self, request, pk, **kwargs):
@@ -102,14 +105,17 @@ class BidView(TemplateView):
             bid.link_post = Post.objects.get(pk=pk)
             bid.save()
             form = BidForm()
+            messages.success(request, "Bid was successful")
             return redirect('home:home')
 
-        args = {'form' : form,}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args = {'form' : form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
 def bid_show(request, pk, pk_alt):
     post = get_object_or_404(Post, pk=pk)
     bid = get_object_or_404(Bid, pk=pk_alt)
+    userprofile = UpdateProfile.objects.get(user=request.user)
     if request.method == 'POST':
         bid.is_accepted = True
         if bid.is_accepted == True:
@@ -118,7 +124,7 @@ def bid_show(request, pk, pk_alt):
             post.save()
         bid.save()
         return redirect('home:home')
-    args = {'bid':bid, 'post':post, }
+    args = {'bid':bid, 'post':post, 'userprofile':userprofile}
     return render(request, 'home/bid_show.html', args)
 
 # def friend(request, pk):
@@ -147,7 +153,8 @@ class RateView(TemplateView):
 
     def get(self, request, **kwargs):
         form = ReviewForm()
-        args = {'form':form}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args = {'form':form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
     def post(self, request, pk, **kwargs):
@@ -158,19 +165,23 @@ class RateView(TemplateView):
             rate.reviewed_by = request.user
             rate.save()
             form = ReviewForm()
+            messages.success("Reviewed user successful")
             return redirect('home:home')
 
-        args = {'form' : form}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args = {'form' : form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
 def rate_show(request, pk):
     rate = get_object_or_404(Rate)
-    args = {'rate':rate}
+    userprofile = UpdateProfile.objects.get(user=request.user)
+    args = {'rate':rate, 'userprofile':userprofile}
     return render(request, 'home/rate_show.html', args)
 
 def my_job(request):
     myJob = Post.objects.filter(user=request.user).order_by('-created')
-    args = {'myJob': myJob}
+    userprofile = UpdateProfile.objects.get(user=request.user)
+    args = {'myJob': myJob, 'userprofile':userprofile}
     return render(request, 'home/myJob.html', args)
 
 def post_job(request):
@@ -183,9 +194,28 @@ def post_job(request):
             # title = form.cleaned_data['title']
             # text = form.cleaned_data['post']
             form = HomeForm()
+            messages.success('Post job successful')
             return redirect('home:home')
     else:
         form = HomeForm()
 
-    args = {'form': form, }
+    userprofile = UpdateProfile.objects.get(user=request.user)
+    args = {'form': form, 'userprofile':userprofile}
     return render(request, 'home/post_job.html', args)
+
+def map(request):
+    userprofile = UpdateProfile.objects.get(user=request.user)
+
+    latitude = None
+    longitude = None
+
+    if userprofile.city == 'Pokhara' or userprofile.city == 'pokhara':
+        latitude = 28.237987
+        longitude = 83.9955879
+
+    if userprofile.city == 'Kathmandu' or userprofile.city == 'kathmandu':
+        latitude = 27.7172453
+        longitude = 85.3239605
+
+    args = {'userprofile':userprofile, 'latitude':latitude, 'longitude':longitude}
+    return render(request, 'home/map.html', args)

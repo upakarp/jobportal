@@ -69,7 +69,17 @@ function myFunc(){
                                                 <div class="post">
                                                 {% if post.created %}
                                                     <div class="date">
-                                                        {{ post.created }}
+                                                        Posted by {{ post.user.get_full_name }} on {{ post.created }}
+                                                    </div>
+                                                    <div>
+                                                        Amount : {{ post.amount }}<br>
+                                                        Location : {{ post.location }}<br>
+                                                        {% if post.is_online is False %}
+                                                            Location based job<br>
+                                                        {% else %}
+                                                            Online job<br>
+                                                        {% endif %}
+                                                        Deadline by : {{ post.deadline }}<br>
                                                     </div>
                                                 {% endif %}
                                                 </div>
@@ -85,7 +95,7 @@ function myFunc(){
                                                         <div class="container">
                                                             <h1>Bids for this post</h1>
                                                             {% for bids in bid %}
-                                                            <a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">{{ bids.amount }}</a>
+                                                            <a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">Bidded by {{ bids.link_user }} at amount {{ bids.amount }}</a>
                                                             <br>
                                                             <!--<p>{{ bids.description }}</p>-->
                                                             <!--<p>{{ bids.link_user }}</p>-->

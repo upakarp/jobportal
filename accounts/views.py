@@ -119,7 +119,8 @@ def update_profile(request):
             return redirect(reverse('home:home'))
     else:
         form = UpdateProfileForm(instance=request.user)
-        args = {'form':form}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args = {'form':form, 'userprofile':userprofile}
         return render(request, 'accounts/update_profile.html', args)
 
 def change_password(request):
@@ -135,6 +136,6 @@ def change_password(request):
 
     else:
         form = PasswordChangeForm(user=request.user)
-
-        args={'form': form}
+        userprofile = UpdateProfile.objects.get(user=request.user)
+        args={'form': form, 'userprofile':userprofile}
         return render(request, 'accounts/change_password.html', args)

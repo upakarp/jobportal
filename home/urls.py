@@ -15,5 +15,5 @@ urlpatterns =[
     # url(r'^ratings/(?P<pk>\d+)$', include('star_ratings.urls', namespace='ratings')),
     url(r'^my_job/$', views.my_job, name='my_job'),
     url(r'^post_job/$', views.post_job, name="post_job"),
-
+    url(r'^map/$', views.map, name="map"),
 ]
