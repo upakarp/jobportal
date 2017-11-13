@@ -25,31 +25,8 @@ function myFunc(){
 		<div class="col-md-12">
 				<div class="panel panel-default ">
 					<div class="panel-heading">
-						Post Job
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+						Job details
+						</div>
 					<div class="panel-body timeline-container">
 						<ul class="timeline">
 							<li>
@@ -89,7 +66,22 @@ function myFunc(){
 
                                                 {% if post.user.get_username == user.username %}
                                                 <div class="container">
+                                                    {% if bid_accepted is None %}
                                                     <a class="btn btn-default" href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                    {% else %}
+                                                    <a class="btn btn-default" disabled href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                    <span style="color:red;">You cannot edit this post now.</span>
+                                                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr?" method="post" target="_blank">
+                                                        <input type="hidden" name="cmd" value="_xclick">
+                                                        <input type="hidden" name="business" value="{{ user.email }}">
+                                                        <input type="hidden" name="amount" value="{{ post.amount }}">
+                                                        <input type="hidden" name="item_name" value="Zyaala Transfer">
+                                                        <input type="hidden" name="currency_code" value="USD">
+                                                        <input type="hidden" name="return" value="http://127.0.0.1:8000/home/thanks">
+                                                        <input type = "image" src="http://www.learningpartners.com.au/images/pay-now-button.png" border="0" name="submit" alt="Paypal">
+
+                                                    </form>
+                                                    {% endif %}
                                                 </div>
                                                     {% if bid %}
                                                         <div class="container">
@@ -135,53 +127,53 @@ function myFunc(){
 </div>
 
 
-    <div class="post">
-        {% if post.created %}
-            <div class="date">
-                {{ post.created }}
-            </div>
-        {% endif %}
-    </div>
+    <!--<div class="post">-->
+        <!--{% if post.created %}-->
+            <!--<div class="date">-->
+                <!--{{ post.created }}-->
+            <!--</div>-->
+        <!--{% endif %}-->
+    <!--</div>-->
 
-    {% if post.user.get_username == user.username %}
-    <div class="container">
-        <a class="btn btn-default" href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>
-    </div>
-        {% if bid %}
-            <div class="container">
-                <h1>Bids for this post</h1>
-                {% for bids in bid %}
-                <a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">{{ bids.amount }}</a>
-                <br>
-                <!--<p>{{ bids.description }}</p>-->
-                <!--<p>{{ bids.link_user }}</p>-->
-                <!--<a class="btn btn-default" href="#" name="btn" id="btn{{ bids.id }}" onclick="myFunc(); ">Accept</a>-->
+    <!--{% if post.user.get_username == user.username %}-->
+    <!--<div class="container">-->
+        <!--<a class="btn btn-default" href="{% url 'home:post_edit' pk=post.pk%}"><span class="glyphicon glyphicon-pencil"></span></a>-->
+    <!--</div>-->
+        <!--{% if bid %}-->
+            <!--<div class="container">-->
+                <!--<h1>Bids for this post</h1>-->
+                <!--{% for bids in bid %}-->
+                <!--<a href = "{% url 'home:bid_show' pk=post.pk pk_alt=bids.pk %}">{{ bids.amount }}</a>-->
+                <!--<br>-->
+                <!--&lt;!&ndash;<p>{{ bids.description }}</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<p>{{ bids.link_user }}</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a class="btn btn-default" href="#" name="btn" id="btn{{ bids.id }}" onclick="myFunc(); ">Accept</a>&ndash;&gt;-->
 
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% else %}
-    <div class="container">
-        {% if post.is_bidded %}
-        <button class="btn" disabled>Bid here</button>
-        {% else %}
-        <a class="btn btn-default" href="{% url 'home:bid_form' pk=post.pk %}" id="bidbtn">Bid here</a>
-        {% endif %}
-    </div>
-    {% endif %}
+                <!--{% endfor %}-->
+            <!--</div>-->
+        <!--{% endif %}-->
+    <!--{% else %}-->
+    <!--<div class="container">-->
+        <!--{% if post.is_bidded %}-->
+        <!--<button class="btn" disabled>Bid here</button>-->
+        <!--{% else %}-->
+        <!--<a class="btn btn-default" href="{% url 'home:bid_form' pk=post.pk %}" id="bidbtn">Bid here</a>-->
+        <!--{% endif %}-->
+    <!--</div>-->
+    <!--{% endif %}-->
 
-    <div class="container">
-        <h1>{{ post.title }}</h1>
-        <strong>{{ post.post|linebreaksbr }}</strong>
-    </div>
+    <!--<div class="container">-->
+        <!--<h1>{{ post.title }}</h1>-->
+        <!--<strong>{{ post.post|linebreaksbr }}</strong>-->
+    <!--</div>-->
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class=" {message.tags} ">{{ message }}</li>
-            {% endfor%}
-        </ul>
-    {% endif %}
+    <!--{% if messages %}-->
+        <!--<ul class="messages">-->
+            <!--{% for message in messages %}-->
+                <!--<li class=" {message.tags} ">{{ message }}</li>-->
+            <!--{% endfor%}-->
+        <!--</ul>-->
+    <!--{% endif %}-->
 
 {% endblock %}
 

@@ -8,20 +8,15 @@ class UserProfileManager(models.Manager):
 
 class UpdateProfile(models.Model):
     user = models.OneToOneField(User)
-    description = models.CharField(max_length=100, default='')
+    description = models.TextField(max_length=100, default='')
     city = models.CharField(max_length=100, default='')
     website = models.URLField(default='')
-    phone = models.IntegerField(default=0)
+    phone = models.CharField(default='', max_length=14)
     images = models.ImageField(upload_to='profile_img', blank=True, null=True)
+
 
 #     def __str__(self):
 #         return self.user.username
 #
 
-# def create_profile(sender, **kwargs):
-#     user = kwargs["instance"]
-#     if kwargs["created"]:
-#         user_profile = UserProfile(user=user)
-#         user_profile.save()
-# post_save.connect(create_profile, sender=User)
 

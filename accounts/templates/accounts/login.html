@@ -1,46 +1,353 @@
-{% extends 'base.html'%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Sparshrestha" />
+    <meta name="keywords" content="Zyaala, Work, Earn, Freelance, Jobs, Nepal" />
+    <meta name="description" content="Work and Earn Freelance Jobs Nepal" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
 
-{% block head %}
+    {% block head %}
     {% load staticfiles %}
-    <title>Zyaala Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="shortcut icon" href="{% static 'accounts/images/favicon.png' %}" />
+    <title>Zyaala | Nepal</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+
+
+    <link rel='stylesheet' id='core-css' href="{% static 'accounts/css/landing.css' %}" type='text/css' media='all' />
+
+    <script type='text/javascript' src="{% static 'accounts/js/jquery.js' %}"></script>
+
+    <script type='text/javascript' src="{% static 'accounts/js/slick.js' %}"></script>
+
+    <script type='text/javascript' src="{% static 'accounts/js/home.js' %}"></script>
+
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
-    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>"
-    <link rel="stylesheet" href="{% static 'accounts/css/loginStyle.css' %}">
-{% endblock %}
 
+    {% endblock %}
+    <style>
+      /* Full-width input fields */
+      input[type=text], input[type=password] {
+          width: 300px;
+          padding: 5px 10px;
+          margin: 5px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
+      }
 
-{% block form %}
-<div class="pen-title">
-    <h1>Zyaala Login</h1><span>Work</i> Hire Earn</a></span>
-</div>
-<div class="rerun"><a href="">Back to Home</a></div>
+      /* Set a style for all buttons */
+      button {
+          background-color: #4CAF50;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          cursor: pointer;
+          width: 150px;
+      }
 
-<div class="container">
-    <div class="card"></div>
-    <div class="card">
-        <h1 class="title">Log in</h1>
-            <form role="form" method="post">
-                {% csrf_token %}
-                <div class="input-container">
-                    {{ form.username }}
-                    <label for="#{label}">Email Address</label>
-                    <div class="bar"></div>
+      button:hover {
+          opacity: 0.8;
+      }
+
+      /* Extra styles for the cancel button */
+      .cancelbtn {
+          width: auto;
+          padding: 10px 18px;
+          background-color: #f44336;
+      }
+
+      /* Center the image and position the close button */
+      .imgcontainer {
+          text-align: center;
+          margin: 24px 0 12px 0;
+          position: relative;
+      }
+
+      img.avatar {
+          width: 25%;
+          border-radius: 10%;
+      }
+
+      .container {
+          padding: 10px;
+      }
+
+      span.psw {
+          float: right;
+          padding-top: 16px;
+      }
+
+      /* The Modal (background) */
+      .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          padding-top: 60px;
+      }
+
+      /* Modal Content/Box */
+      .modal-content {
+          background-color: #fefefe;
+          margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+          border: 1px solid #888;
+          width: 25%; /* Could be more or less, depending on screen size */
+      }
+
+      /* The Close Button (x) */
+      .close {
+          position: absolute;
+          right: 25px;
+          top: 0;
+          color: red;
+          font-size: 45px;
+          font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: red;
+          cursor: pointer;
+      }
+
+      /* Add Zoom Animation */
+      .animate {
+          -webkit-animation: animatezoom 0.6s;
+          animation: animatezoom 0.6s
+      }
+
+      @-webkit-keyframes animatezoom {
+          from {-webkit-transform: scale(0)} 
+          to {-webkit-transform: scale(1)}
+      }
+          
+      @keyframes animatezoom {
+          from {transform: scale(0)} 
+          to {transform: scale(1)}
+      }
+
+      /* Change styles for span and cancel button on extra small screens */
+      @media screen and (max-width: 300px) {
+          span.psw {
+             display: block;
+             float: none;
+          }
+          .cancelbtn {
+             width: 100%;
+          }
+      }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <a href="#jobcategories" class="btn btn-secondary">Browse Jobs</a>
+                    <a href="#howitworks" class="btn btn-secondary">How It Works</a>
+                    <button class="btn btn-secondary" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
                 </div>
-                <div class="input-container">
-                    {{ form.password }}
-                    <label for="#{label}">Password</label>
-                    <div class="bar"></div>
+
+                <div class="logo col-xs-12 col-sm-4">
+                    <a href="/" title="Zyaala Logo">
+                        <a href="/">
+                            <img src="{% static 'accounts/images/cover.png' %}" alt="Zyaala | Freelance Nepal." />
+                        </a>
+                    </a>
                 </div>
-                <div class="button-container">
-                    <button type="submit" name="login"><span>Login</span></button>
-                </div>
-                <div class="footer"><a href="{% url 'accounts:reset_password' %}">Forgot your password</a></div>
-            </form>
+                <ul class="col-xs-12 col-sm-4 header-list pull-right">
+                    <li class="lf-info"><a href="tel+9779815124213">+97798151242213</a>
+                    </li>
+                    <li class="lf-info"><a href="mailto:support@zyaala.com">support@zyaala.com</a>
+                    </li>
+                    <li class="project-start pull-right">
+                        <a href="{% url 'accounts:reset_password' %}" class="btn btn-secondary btn-orange">Reset Password</a>
+                    </li>
+                </ul>
+                
+            </div>
         </div>
-</div>
+    </header>
 
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src="{% static 'accounts/js/loginStyle.js' %}"></script>
+    <main>
 
-{% endblock %}
+        <div class="container banner-content text-center ">
+            <h1 class="lg-head">Hire & Get Hired !</h1>
+            <p>A Nepali Freelancing website where only Nepali citizens can search the posted jobs, make bids on them and start working online or even offline by transport. Here every transaction is run by Nepalese currency system. Let's make it big ! <span class="blue-text">Jay Nepal !</span> </p>
+
+            <br>
+            <a href="{% url 'accounts:register' %}">
+                <button class="btn btn-green" type="submit">Start Working</button>
+            </a>
+
+        </div>
+
+        <div class="common-block" id="jobcategories">
+            <div class="container">
+                <h2 class="green-header">Job Categories</h2>
+                <h2 class="header text-center">Online Works</h2>
+                <ul class="client-list">
+                    <li><img src="{% static 'accounts/images/categories/businessman.jpeg' %}" alt="businessman-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/translator.jpeg' %}"" alt="translator-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/programmer.png' %}"" alt="programmer-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/teacher.jpg' %}" alt="teacher-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/writers.jpg' %}" alt="writers-logo-bw">
+                    </li>
+                </ul>
+                <h2 class="header text-center">Location Works</h2>
+                <ul class="client-list">
+                    <li><img src="{% static 'accounts/images/categories/handyman.jpg' %}" alt="handyman-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/photographer.png' %}" alt="photographer-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/tourguide.jpg' %}" alt="tourguide-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/plumber.gif' %}" alt="plumber-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/categories/designer.png' %}" alt="designer-logo-bw">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="common-block text-center" id="howitworks">
+            <div class="container feature-container">
+                <h2 class="normal-heading">How It Works <span class="green-text">As Hirer | As Worker</span></h2>
+                <p><span class="green-text">Single account works as both hirer and worker account.</span>
+                </p>
+                <div class="img-desc-block">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="img-wrap">
+                            <img src="{% static 'accounts/images/hirer.png' %}" alt="hirer">
+                        </div>
+                        <h3>As Hirer</h3>
+                        <p class="text-justify">Your account works as an employer account. Post Jobs. Provide lob details. Specify Pay Amount and Workers Needed. Wait for the workers' bid. Based on reviews and work ratings, Hire your worker/s. At work completion, you pay your worker's zyaala. </p>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="img-wrap">
+                            <img src="{% static 'accounts/images/worker.png' %}" alt="worker">
+                        </div>
+                        <h3>As Worker</h3>
+                        <p>Your account also works as an job seeker. Setup Payment Transaction details. Maintain your Profile. Complete Work Permit Verification. Find Jobs Nearby. Bid your rates. Get Accepted and Hired. Start Working. Legwork or Online Works. Get Securely Paid.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="common-block text-center counter-block-1 counter-block-2">
+            <div class="container">
+                <h2 class="normal-heading">We want to grow with you all ! <span class="green-text">Jay Nepal !</span></span></h2>
+                <div class="col-xs-12 explore-col col-sm-4 text-center">
+                    <img src="{% static 'accounts/images/jobs.png' %}" class="sm-img" alt="jobs">
+                    <h3 class="sm-head">Jobs Per Day</h3>
+                    <span class="green-text counter counter2" val="100">0</span>
+                </div>
+                <div class="col-xs-12 explore-col col-sm-4 text-center">
+                    <img src="{% static 'accounts/images/activeusers.png' %}" class="sm-img" alt="activeusers">
+                    <h3 class="sm-head">Active Users</h3>
+                    <span class="green-text counter counter2" val="100">0</span>
+                </div>
+                <div class="col-xs-12 explore-col col-sm-4 text-center">
+                    <img src="{% static 'accounts/images/currency.png' %}" class="sm-img" alt="currency">
+                    <h3 class="sm-head">Daily Transactions</h3>
+                    <span class="green-text counter counter2" val="100">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="common-block">
+            <div class="container">
+                <h2 class="text-center">Get Paid via <span class="green-text">Payment Partners</span> </h2>
+                <ul class="badges-list">
+                    <li><img src="{% static 'accounts/images/khalti.png' %}" alt="khalti-partner-logo-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/nbl.jpg' %}" alt="nbl-bw">
+                    </li>
+                    <li><img src="{% static 'accounts/images/paypal.png' %}" alt="paypal-bw">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+
+    {% block form %}
+        <div id="id01" class="modal">
+
+          <form class="modal-content animate" method="post">
+            {% csrf_token %}
+            <div class="imgcontainer">
+              <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+              <img src="{% static 'accounts/images/avatar.png' %}" alt="Avatar" class="avatar">
+            </div>
+
+            <div class="container">
+              <label ><b>Email Address</b></label>
+                {{ form.username }}
+            </div>
+            <div class="container">
+              <label><b>Password</b></label>
+              {{ form.password }}
+            </div>
+            <div class="container">
+              <button class="btn btn-green" type="submit" name="login">Log In </button>
+            </div>
+            <div class="container">
+                <input type="checkbox" checked="checked"> Remember me
+            </div>
+            <div class="container">
+              <a href="{% url 'accounts:reset_password' %}"><span class="psw">Forgot password?</span></a>
+            </div>
+
+          </form>
+        </div>
+    {% endblock %}
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <footer>
+        <div class="footer-bot">
+            <div class="container">
+                <span class="col-xs-12 col-sm-4 copyright"> © 2017 | WiredIn Technology.</span>
+                <a href="#" target="_blank"><span class=" col-sm-4 copyright" style="text-align: center;font-size: 13px;color: yellow;">Being crafted with &#9825; in Nepal</span></a>
+
+                <ul class="social-links col-xs-12 col-sm-4">
+                    <li><a href="https://twitter.com/ZyaalaNepal" title="twitter" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                    </li>
+                    <li><a href="https://www.facebook.com/pg/Zyaala-624794084391748/" title="facebook" target="_blank"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+                    </li>
+                    <li><a href="https://www.linkedin.com/company/13279282" title="linkedin" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+

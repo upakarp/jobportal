@@ -40,57 +40,14 @@
             <ul class="nav navbar-nav navbar-top-links">
                 <li><a href="{% url 'home:home' %}">Home</a></li>
                 <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
-                <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
+                <!--<li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>-->
                 <li><a href="{% url 'accounts:update_profile' %}">Update Profile</a></li>
+				<li><a href="{% url 'chat:chat' %}">Join discussion</a></li>
                 <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
-
-                <li>
-                    <form method="post" class="navbar-form" role="search">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </form>
-                </li>
 
             </ul>
             <ul class="nav nav-navbar navbar-top-links navbar-right">
 
-                <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-						<em class="fa fa-envelope"></em><span class="label label-danger">15</span>
-					</a>
-						<ul class="dropdown-menu dropdown-messages">
-							<li>
-								<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-									<img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-									</a>
-									<div class="message-body"><small class="pull-right">3 mins ago</small>
-										<a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-									<br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-								</div>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-									<img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-									</a>
-									<div class="message-body"><small class="pull-right">1 hour ago</small>
-										<a href="#">New message from <strong>Jane Doe</strong>.</a>
-									<br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
-								</div>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<div class="all-button"><a href="#">
-									<em class="fa fa-inbox"></em> <strong>All Messages</strong>
-								</a></div>
-							</li>
-						</ul>
-
-					</li>
 					<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
 						<em class="fa fa-bell"></em>
 					</a>
@@ -138,9 +95,10 @@
 			<li><a href="{% url 'home:post_job' %}" class="postjob"><em class="fa fa-toggle-off">&nbsp;</em>Post job</a></li>
             <!--<li><button id="payment-button">Pay with Khalti</button></li>-->
 
-			<li><div id="paypal-button-container"></div></li>
+			<!--<li><div id="paypal-button-container"></div></li>-->
 
-			<li><a href="{% url 'home:map' %}">Map</a></li>
+			<li><a href="{% url 'home:map' %}"><em class="fa fa-map-marker"></em> Map</a></li>
+			<!--<li><a href="{% url 'home:verify_phone' %}"><em class="fa fa-mobile"></em>Verify your phone</a></li>-->
 			<li><a href="{% url 'accounts:logout' %}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
 	</div>
@@ -152,17 +110,6 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form method="post" class="navbar-form" role="search">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </form>
-                </li>
                 <li><a href="{% url 'accounts:login' %}">Login</a></li>
                 <li><a href="{% url 'accounts:register' %}">Register</a></li>
             </ul>
@@ -189,104 +136,6 @@
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<script>
+<!--<script src="https://www.paypalobjects.com/api/checkout.js"></script>-->
 
-    // Render the PayPal button
-
-
-
-    paypal.Button.render({
-
-
-
-        // Set your environment
-
-
-
-        env: 'sandbox', // sandbox | production
-
-
-
-        // Specify the style of the button
-
-
-
-        style: {
-
-            label: 'pay',
-
-            size:  'medium', // small | medium | large | responsive
-
-            shape: 'pill',   // pill | rect
-
-            color: 'blue'   // gold | blue | silver | black
-
-        },
-
-
-
-        // PayPal Client IDs - replace with your own
-
-        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-
-
-
-        client: {
-
-            sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-
-            production: '<insert production client id>'
-
-        },
-
-
-
-        // Wait for the PayPal button to be clicked
-
-
-
-        payment: function(data, actions) {
-
-            return actions.payment.create({
-
-                payment: {
-
-                    transactions: [
-
-                        {
-
-                            amount: { total: '15', currency: 'USD' }
-
-                        }
-
-                    ]
-
-                }
-
-            });
-
-        },
-
-
-
-        // Wait for the payment to be authorized by the customer
-
-
-
-        onAuthorize: function(data, actions) {
-
-            return actions.payment.execute().then(function() {
-
-                window.alert('Payment Complete!');
-
-            });
-
-        }
-
-
-
-    }, '#paypal-button-container');
-
-</script>
 </html>

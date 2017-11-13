@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
 from accounts.models import UpdateProfile
@@ -18,7 +19,10 @@ class HomeView(TemplateView):
         posts = Post.objects.exclude(user=request.user).order_by('-created')
         myPost = Post.objects.filter(user=request.user).order_by('-created')
         users = User.objects.exclude(id=request.user.id)
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
 
         # friend = get_object_or_404(Friend, current_user=request.user)
         # friends = friend.user.all()
@@ -52,14 +56,25 @@ def change_friends(request, operation, pk):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     bid = Bid.objects.filter(link_post = pk)
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    user = request.user
+    bid_accepted = None
+    for bids in bid:
+        if bids.is_accepted == True:
+            bid_accepted = bids.is_accepted
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
 
-    args = {'post':post, 'bid':bid, 'userprofile':userprofile}
+    args = {'post':post, 'bid':bid, 'userprofile':userprofile, 'bid_accepted':bid_accepted, 'user':user}
     return render(request, 'home/post_detail.html', args)
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
     if request.method == 'POST':
         form = HomeForm(request.POST, instance=post)
         if form.is_valid():
@@ -93,7 +108,11 @@ class BidView(TemplateView):
 
     def get(self, request, **kwargs):
         form = BidForm()
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
+
         args = {'form':form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
@@ -108,14 +127,22 @@ class BidView(TemplateView):
             messages.success(request, "Bid was successful")
             return redirect('home:home')
 
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
+
         args = {'form' : form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
 def bid_show(request, pk, pk_alt):
     post = get_object_or_404(Post, pk=pk)
     bid = get_object_or_404(Bid, pk=pk_alt)
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
+
     if request.method == 'POST':
         bid.is_accepted = True
         if bid.is_accepted == True:
@@ -153,7 +180,10 @@ class RateView(TemplateView):
 
     def get(self, request, **kwargs):
         form = ReviewForm()
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
         args = {'form':form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
@@ -168,19 +198,29 @@ class RateView(TemplateView):
             messages.success("Reviewed user successful")
             return redirect('home:home')
 
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
         args = {'form' : form, 'userprofile':userprofile}
         return render(request, self.template_name, args)
 
 def rate_show(request, pk):
     rate = get_object_or_404(Rate)
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
+
     args = {'rate':rate, 'userprofile':userprofile}
     return render(request, 'home/rate_show.html', args)
 
 def my_job(request):
     myJob = Post.objects.filter(user=request.user).order_by('-created')
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
     args = {'myJob': myJob, 'userprofile':userprofile}
     return render(request, 'home/myJob.html', args)
 
@@ -194,28 +234,51 @@ def post_job(request):
             # title = form.cleaned_data['title']
             # text = form.cleaned_data['post']
             form = HomeForm()
-            messages.success('Post job successful')
             return redirect('home:home')
     else:
         form = HomeForm()
 
-    userprofile = UpdateProfile.objects.get(user=request.user)
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
     args = {'form': form, 'userprofile':userprofile}
     return render(request, 'home/post_job.html', args)
 
 def map(request):
-    userprofile = UpdateProfile.objects.get(user=request.user)
-
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
     latitude = None
     longitude = None
 
-    if userprofile.city == 'Pokhara' or userprofile.city == 'pokhara':
-        latitude = 28.237987
-        longitude = 83.9955879
+    try:
+        if userprofile.city == 'Pokhara' or userprofile.city == 'pokhara':
+            latitude = 28.237987
+            longitude = 83.9955879
 
-    if userprofile.city == 'Kathmandu' or userprofile.city == 'kathmandu':
-        latitude = 27.7172453
-        longitude = 85.3239605
+        if userprofile.city == 'Kathmandu' or userprofile.city == 'kathmandu':
+            latitude = 27.7172453
+            longitude = 85.3239605
+
+        if userprofile.city == 'Chitwan' or userprofile.city == 'chitwan':
+            latitude = 27.5291
+            longitude = 84.3542
+    except:
+        userprofile = None
 
     args = {'userprofile':userprofile, 'latitude':latitude, 'longitude':longitude}
     return render(request, 'home/map.html', args)
+
+def paypal_return(request):
+    return render(request, 'home/thanks.html')
+
+@csrf_exempt
+def verify_phone(request):
+    try:
+        userprofile = UpdateProfile.objects.get(user=request.user)
+    except UpdateProfile.DoesNotExist:
+        userprofile = None
+
+    return render(request, 'home/verify_phone.html', {'userprofile':userprofile})

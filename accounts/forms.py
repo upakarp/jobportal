@@ -49,8 +49,8 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = UpdateProfile
         fields = (
-            'description',
             'city',
+            'description',
             'website',
             'phone',
             'images'

@@ -18,6 +18,7 @@ from accounts.models import UpdateProfile
 def home(request):
     return render(request, 'base.html')
 
+
 def search(request):
     # if request.method == 'POST':
     #     form = SearchForm(request.POST)
@@ -37,7 +38,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('accounts:home'))
+            return redirect(reverse('accounts:login'))
     else:
         form = RegistrationForm()
 
@@ -74,7 +75,10 @@ def view_profile(request, pk=None):
     else:
         form = {}
         user = request.user
-        userprofile = get_object_or_404(UpdateProfile, user=request.user)
+        try:
+            userprofile = get_object_or_404(UpdateProfile, user=request.user)
+        except:
+            userprofile = None
 
     rate = Rate.objects.filter(reviewed_user = user.pk)
     present_review = 0
@@ -119,8 +123,7 @@ def update_profile(request):
             return redirect(reverse('home:home'))
     else:
         form = UpdateProfileForm(instance=request.user)
-        userprofile = UpdateProfile.objects.get(user=request.user)
-        args = {'form':form, 'userprofile':userprofile}
+        args = {'form':form}
         return render(request, 'accounts/update_profile.html', args)
 
 def change_password(request):
@@ -136,6 +139,12 @@ def change_password(request):
 
     else:
         form = PasswordChangeForm(user=request.user)
-        userprofile = UpdateProfile.objects.get(user=request.user)
+        try:
+            userprofile = UpdateProfile.objects.get(user=request.user)
+        except UpdateProfile.DoesNotExist:
+            userprofile = None
         args={'form': form, 'userprofile':userprofile}
         return render(request, 'accounts/change_password.html', args)
+
+def join_discussion(request):
+    return render(request, 'chat/chat.html')

@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% load static i18n %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Chat powered by Channels</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"></style>
+    <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.4.4/babel.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://fb.me/react-15.0.1.min.js"></script>
+    <script src="https://fb.me/react-dom-15.0.1.min.js"></script>
+
+    <script>
+     $(function(){
+         eval(Babel.transform($('script[type="text/babel"]').text(), {
+             presets: ['es2015', 'react', 'stage-0']
+         }).code)
+     })
+     </script>
+{% endblock %}
+
+{% block form %}
+    <div id="container">
+      <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+		<div class="col-md-12">
+				<div class="panel panel-default ">
+					<div class="panel-body timeline-container">
+						<ul class="timeline">
+							<li>
+								<div class="timeline-badge"></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">
+                                            <div id="app"></div>
+                                        </h4>
+									</div>
+
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+        </div>
+</div>
+</div>
+
+<script type="text/babel">
+
+        class Message extends React.Component {
+            render() {
+                let className = "message message--" + this.props.type;
+                return (
+                    <div className={className}>
+                        {this.props.user ?
+                            <span className="message__username">
+                                {this.props.user}:
+                            </span>
+                            : null
+                        }
+                        <span className="message__text">
+                            {this.props.text}
+                        </span>
+                    </div>
+                )
+            }
+        }
+
+        class MessagesWindow extends React.Component {
+            componentWillUpdate = () => {
+              let node = ReactDOM.findDOMNode(this);
+              let currentPosition = Math.round(node.scrollTop + node.offsetHeight);
+              this.shouldScrollBottom = Math.abs(currentPosition - node.scrollHeight) < Math.abs(5);
+            }
+
+            componentDidUpdate = () => {
+              if (this.shouldScrollBottom) {
+                let node = ReactDOM.findDOMNode(this);
+                node.scrollTop = node.scrollHeight;
+              }
+            }
+
+            render() {
+                let messages = this.props.messages.map((item) => {
+                    return <Message {...item} />
+                })
+
+                return (
+                    <div ref="messagesWindow" className="messages">
+                        {messages}
+                    </div>
+                )
+            }
+        }
+
+        class ChatWindow extends React.Component {
+            state = {
+                username: this.props.username || null,
+                online: false,
+                messages: []
+            }
+
+            render() {
+
+                let connectToolbarClass = "connect-toolbar";
+                if (this.state.online) {
+                    connectToolbarClass += " connect-toolbar--online";
+                }
+
+                return (
+                    <div className="chat-window">
+                        <div className={connectToolbarClass}>
+                            <input defaultValue={this.state.username}
+                                placeholder="username"
+                                className="connect-toolbar__username"
+                                type="text"
+                                ref="username" />
+                            <button className="connect-toolbar__connect-button" onClick={this.connect}>{this.props.joinButtonText}</button>
+                        </div>
+
+                        <MessagesWindow messages={this.state.messages} />
+
+                        <div className="message-toolbar">
+                            <input onKeyPress={this.onMessage}
+                                ref="message_input"
+                                type="text"
+                                placeholder={this.props.messageInputPlaceholder}
+                                className="message-toolbar__text-input" />
+                        </div>
+                    </div>
+                )
+            }
+
+            connect = () => {
+                let username = this.refs.username.value
+                this.setState({username: username})
+                localStorage.username = username;
+
+                let socket = new WebSocket("ws://" + location.host + "/chat/main");
+                this.socket = socket;
+                socket.onmessage = (e) => {
+                    let {messages} = this.state;
+                    messages.push(JSON.parse(e.data));
+                    this.setState({messages: messages})
+                }
+                socket.onopen = () => {
+                    socket.send(JSON.stringify({
+                        type: 'connect',
+                        username: this.state.username
+                    }))
+                    this.setState({online: true})
+                }
+            }
+
+            onMessage = (e) => {
+                if (e.nativeEvent.keyCode != 13) {
+                    return
+                }
+
+                let text = e.target.value;
+
+                if (text == "") {
+                    return
+                }
+
+                let message = {
+                    type: 'message',
+                    text: text
+                }
+                // send message
+                this.socket.send(JSON.stringify(message));
+
+                this.refs.message_input.value = '';
+            }
+        }
+
+        let options = {
+            username: localStorage.username,
+            joinButtonText: '{% trans "Join chat" %}',
+            messageInputPlaceholder: '{% trans "Enter your message" %}'
+        }
+        ReactDOM.render(<ChatWindow {...options} />, document.getElementById('app'))
+    </script>
+
+
+    <!--<div id="app"></div>-->
+
+    <!--<script type="text/babel">-->
+
+        <!--class Message extends React.Component {-->
+            <!--render() {-->
+                <!--let className = "message message&#45;&#45;" + this.props.type;-->
+                <!--return (-->
+                    <!--<div className={className}>-->
+                        <!--{this.props.user ?-->
+                            <!--<span className="message__username">-->
+                                <!--{this.props.user}:-->
+                            <!--</span>-->
+                            <!--: null-->
+                        <!--}-->
+                        <!--<span className="message__text">-->
+                            <!--{this.props.text}-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--)-->
+            <!--}-->
+        <!--}-->
+
+        <!--class MessagesWindow extends React.Component {-->
+            <!--componentWillUpdate = () => {-->
+              <!--let node = ReactDOM.findDOMNode(this);-->
+              <!--let currentPosition = Math.round(node.scrollTop + node.offsetHeight);-->
+              <!--this.shouldScrollBottom = Math.abs(currentPosition - node.scrollHeight) < Math.abs(5);-->
+            <!--}-->
+
+            <!--componentDidUpdate = () => {-->
+              <!--if (this.shouldScrollBottom) {-->
+                <!--let node = ReactDOM.findDOMNode(this);-->
+                <!--node.scrollTop = node.scrollHeight;-->
+              <!--}-->
+            <!--}-->
+
+            <!--render() {-->
+                <!--let messages = this.props.messages.map((item) => {-->
+                    <!--return <Message {...item} />-->
+                <!--})-->
+
+                <!--return (-->
+                    <!--<div ref="messagesWindow" className="messages">-->
+                        <!--{messages}-->
+                    <!--</div>-->
+                <!--)-->
+            <!--}-->
+        <!--}-->
+
+        <!--class ChatWindow extends React.Component {-->
+            <!--state = {-->
+                <!--username: this.props.username || null,-->
+                <!--online: false,-->
+                <!--messages: []-->
+            <!--}-->
+
+            <!--render() {-->
+
+                <!--let connectToolbarClass = "connect-toolbar";-->
+                <!--if (this.state.online) {-->
+                    <!--connectToolbarClass += " connect-toolbar&#45;&#45;online";-->
+                <!--}-->
+
+                <!--return (-->
+                    <!--<div className="chat-window">-->
+                        <!--<div className={connectToolbarClass}>-->
+                            <!--<input defaultValue={this.state.username}-->
+                                <!--placeholder="username"-->
+                                <!--className="connect-toolbar__username"-->
+                                <!--type="text"-->
+                                <!--ref="username" />-->
+                            <!--<button className="connect-toolbar__connect-button" onClick={this.connect}>{this.props.joinButtonText}</button>-->
+                        <!--</div>-->
+
+                        <!--<MessagesWindow messages={this.state.messages} />-->
+
+                        <!--<div className="message-toolbar">-->
+                            <!--<input onKeyPress={this.onMessage}-->
+                                <!--ref="message_input"-->
+                                <!--type="text"-->
+                                <!--placeholder={this.props.messageInputPlaceholder}-->
+                                <!--className="message-toolbar__text-input" />-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--)-->
+            <!--}-->
+
+            <!--connect = () => {-->
+                <!--let username = this.refs.username.value-->
+                <!--this.setState({username: username})-->
+                <!--localStorage.username = username;-->
+
+                <!--let socket = new WebSocket("ws://" + location.host + "/chat/main");-->
+                <!--this.socket = socket;-->
+                <!--socket.onmessage = (e) => {-->
+                    <!--let {messages} = this.state;-->
+                    <!--messages.push(JSON.parse(e.data));-->
+                    <!--this.setState({messages: messages})-->
+                <!--}-->
+                <!--socket.onopen = () => {-->
+                    <!--socket.send(JSON.stringify({-->
+                        <!--type: 'connect',-->
+                        <!--username: this.state.username-->
+                    <!--}))-->
+                    <!--this.setState({online: true})-->
+                <!--}-->
+            <!--}-->
+
+            <!--onMessage = (e) => {-->
+                <!--if (e.nativeEvent.keyCode != 13) {-->
+                    <!--return-->
+                <!--}-->
+
+                <!--let text = e.target.value;-->
+
+                <!--if (text == "") {-->
+                    <!--return-->
+                <!--}-->
+
+                <!--let message = {-->
+                    <!--type: 'message',-->
+                    <!--text: text-->
+                <!--}-->
+                <!--// send message-->
+                <!--this.socket.send(JSON.stringify(message));-->
+
+                <!--this.refs.message_input.value = '';-->
+            <!--}-->
+        <!--}-->
+
+        <!--let options = {-->
+            <!--username: localStorage.username,-->
+            <!--joinButtonText: '{% trans "Join chat" %}',-->
+            <!--messageInputPlaceholder: '{% trans "Enter your message" %}'-->
+        <!--}-->
+        <!--ReactDOM.render(<ChatWindow {...options} />, document.getElementById('app'))-->
+    <!--</script>-->
+
+{% endblock %}

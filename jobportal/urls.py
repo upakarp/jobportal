@@ -18,14 +18,25 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from jobportal import views
+from rest_framework import routers
+from restApi import views as rest_view
+
+router = routers.DefaultRouter()
+router.register(r'rest_users', rest_view.UserViewSet)
+router.register(r'rest_user_profile', rest_view.UserProfileViewSet)
+router.register(r'rest_post', rest_view.PostViewSet)
+router.register(r'rest_bid', rest_view.BidViewSet)
+router.register(r'rest_rate', rest_view.RateViewSet)
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'account/', include('accounts.urls', namespace='accounts')),
     url(r'home/', include('home.urls', namespace='home')),
-    url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
     url(r'^chat/', include('chat.urls', namespace='chat')),
+
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 if settings.DEBUG:

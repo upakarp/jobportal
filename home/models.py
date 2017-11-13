@@ -3,13 +3,14 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.fields import JSONField
 
 class Post(models.Model):
     title = models.CharField(max_length=50, null=True)
     post = models.TextField()
     user = models.ForeignKey(User)
     amount = models.PositiveIntegerField(default=0)
-    location = models.CharField(max_length=100, null=True)
+    location = models.CharField(max_length=100, null=True, default='Pokhara')
     is_online = models.BooleanField(default=False)
     deadline = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)

@@ -16,4 +16,6 @@ urlpatterns =[
     url(r'^my_job/$', views.my_job, name='my_job'),
     url(r'^post_job/$', views.post_job, name="post_job"),
     url(r'^map/$', views.map, name="map"),
+    url(r'^thanks/$', views.paypal_return, name="paypal_return"),
+    url(r'verify_phone/$', views.verify_phone, name='verify_phone')
 ]

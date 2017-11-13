@@ -4,7 +4,6 @@
     {% load staticfiles %}
     <title>Zyaala - Dashboard</title>
 	<link href="{% static 'home/css/datepicker3.css' %}" rel="stylesheet">
-    <script src="https://khalti.com/static/khalti-checkout.js"></script>
 {% endblock %}
 
 {% block form %}
@@ -17,30 +16,8 @@
 				<div class="panel panel-default ">
 					<div class="panel-heading">
 						Timeline
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+
+					</div>
 					<div class="panel-body timeline-container">
 						<ul class="timeline">
 							{% for post in posts %}
@@ -63,37 +40,18 @@
 			<div class="col-md-6">
 				<div class="panel panel-default chat">
 					<div class="panel-heading">
-						Chat
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+						Connects
+						</div>
 					<div class="panel-body">
 						<ul>
 							{% for post in myPost %}
 								{% if post.who_bidded is not None %}
 							<li class="left clearfix"><span class="chat-img pull-left">
+								{% if post.who_bidded.images %}
+								<img src="{{ post.who_bidded.images.url }}" class="img-circle"/>
+								{% else %}
 								<img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								{% endif %}
 								</span>
 								<div class="chat-body clearfix">
 
@@ -115,46 +73,6 @@
 	</div>	<!--/.main-->
 <!-- Dashboard code ends -->
 
-<div class="container">
-    <div class="col-md-8">
-        <h1>Home</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.title }}
-            {{ form.post }}
-            <br>
-            <button type="submit">Submit</button>
-        </form>
-        <h2>Other's Post</h2>
-        {% for post in posts %}
-        <h1><a href="{% url 'home:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-            <p>Posted by {{ post.user.get_full_name }} on {{ post.created }}</p>
-        {% endfor %}
-        <h1>My Posts</h1>
-        {% for post in myPost %}
-        <h1><a href="{% url 'home:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-            <p>Posted on {{ post.created }}</p>
-            <p>Bidded by {{ post.who_bidded }}</p>
-        {% endfor %}
-    </div>
-    <div class="col-md-4">
-        <h2>Other People</h2>
-        {% for user in users %}
-        <a href="{% url 'accounts:profile_with_pk' pk=user.pk %}"><h3>{{ user.username }}</h3></a>
-        {% endfor %}
-
-        <h2>Friends</h2>
-
-        {% for post in myPost %}
-            {% if post.who_bidded is not None %}
-                <a href="{% url 'accounts:profile_with_pk' pk=post.who_bidded.pk %}"><h3>{{ post.who_bidded }}</h3></a>
-            {% else %}
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>
-
-
 
 	<script src="{% static 'home/js/chart.min.js' %}"></script>
 	<script src="{% static 'home/js/chart-data.js' %}"></script>
@@ -162,39 +80,5 @@
 	<script src="{% static 'home/js/easypiechart-data.js' %}"></script>
 	<script src="{% static 'home/js/bootstrap-datepicker.js' %}"></script>
 	<script src="{% static 'home/js/custom.js' %}"></script>
-	<script>
-		window.onload = function () {
-	var chart1 = document.getElementById("line-chart").getContext("2d");
-	window.myLine = new Chart(chart1).Line(lineChartData, {
-	responsive: true,
-	scaleLineColor: "rgba(0,0,0,.2)",
-	scaleGridLineColor: "rgba(0,0,0,.05)",
-	scaleFontColor: "#c5c7cc"
-	});
-};
-
-    var config = {
-            // replace the publicKey with yours
-            "publicKey": "test_public_key_af6544c9829b4a2fb888a47b4751d1bb",
-            "productIdentity": "1234567890",
-            "productName": "Dragon",
-            "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
-            "eventHandler": {
-                onSuccess (payload) {
-                    // hit merchant api for initiating verfication
-                    console.log(payload);
-                },
-                onError (error) {
-                    console.log(error);
-                }
-            }
-        };
-
-        var checkout = new KhaltiCheckout(config);
-        var btn = document.getElementById("payment-button");
-        btn.onclick = function () {
-            checkout.show({amount: 1000});
-        }
-	</script>
 
 {% endblock %}

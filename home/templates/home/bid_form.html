@@ -8,31 +8,8 @@
 		<div class="col-md-12">
 				<div class="panel panel-default ">
 					<div class="panel-heading">
-						Post Job
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+						Bid here
+						</div>
 					<div class="panel-body timeline-container">
 						<ul class="timeline">
 							<li>
@@ -45,10 +22,10 @@
                                               {% csrf_token %}
                                               {{ form.as_p }}
                                               <!--<input type="file" name="myfile">-->
-                                              <button type="submit">Upload</button>
+                                              <button type="submit">Submit your bid</button>
                                             </form>
 
-                                            <p><a href="{% url 'home:home' %}">Return to home</a></p>
+                                            <!--<p><a href="{% url 'home:home' %}">Return to home</a></p>-->
                                         </h4>
 									</div>
 
