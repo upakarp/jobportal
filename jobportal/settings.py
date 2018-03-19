@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+#INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'chat',
     'channels',
     'rest_framework',
-]
+]#
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,18 +143,18 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = '/home'
+#LOGIN_REDIRECT_URL = '/home'
 
-LOGIN_URL = 'account/login'
+#LOGIN_URL = 'account/login'
 
-LOGIN_EXEMPT_URLS = (
+#LOGIN_EXEMPT_URLS = (
     r'^account/logout/$',
     r'^account/register/$',
     r'^account/reset-password/$',
     r'^account/reset-password/done/$',
     r'^account/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
     r'^account/reset-password/complete/$'
-)
+#)
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
