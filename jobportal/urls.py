@@ -30,15 +30,15 @@ router.register(r'rest_rate', rest_view.RateViewSet)
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^admin/', admin.site.urls),
-    url(r'account/', include('accounts.urls', namespace='accounts')),
-    url(r'home/', include('home.urls', namespace='home')),
-    url(r'^chat/', include('chat.urls', namespace='chat')),
+    #url(r'^admin/', admin.site.urls),
+    #url(r'account/', include('accounts.urls', namespace='accounts')),
+    #url(r'home/', include('home.urls', namespace='home')),
+    #url(r'^chat/', include('chat.urls', namespace='chat')),
 
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
-if settings.DEBUG:
+#if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
